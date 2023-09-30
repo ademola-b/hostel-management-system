@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block styles %}
+    {% include 'utils/styles.html' %}
+{% endblock styles %}
+
+{% block body %}
+        {% include 'utils/navbar.html' %}
+        <!-- partial -->
+        <div class="container-fluid page-body-wrapper">
+          <div class="theme-setting-wrapper">
+     
+        </div>
+      
+          <!-- partial -->
+          <!-- partial:partials/_sidebar.html -->
+          {% include 'utils/aside.html' %}
+          <!-- partial -->
+          <div class="main-panel">
+            <div class="content-wrapper">
+              <div class="row">
+                <div class="col-md-12 grid-margin">
+                  <div class="row">
+                    <div class="col-12 col-xl-8 mb-4 mb-xl-0">
+                      <h2 class="font-weight-bold text-primary">Welcome, {{request.user | title}}</h3>
+                    </div>
+             
+                  </div>
+                </div>
+              </div>
+              {% include 'utils/messages.html' %}
+              
+              <div class="row">
+                {% if mssg %}
+                <div class="col-md-12 grid-margin stretch-card">
+                  <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex flex-wrap">
+                            <p class="card-title text-danger">{{mssg}}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                {% elif user_institution %}
+                <div class="col-md-6 grid-margin stretch-card">
+                    <div class="card">
+                        <div class="card-body">
+                            <p class="card-title text-primary">Students Added</p>
+                            <span class="badge badge-warning"><h4 class="text-primary">Total Students: {{students}} </h4></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 grid-margin stretch-card">
+                    <div class="card">
+                        <div class="card-body">
+                            <p class="card-title text-primary">Users</p>
+                            <span class="badge badge-warning"><h4 class="text-primary">Total Users in your institution: {{institution_user}} </h4></span>
+                        </div>
+                    </div>
+                </div>
+                {% else %}
+                    <div class="col-6 grid-margin stretch-card">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex flex-wrap">
+                                <h3 class="card-title text-primary">Hostel Allocation Requirements</h3>
+                                <span class="text-dark">
+                                    {% lorem 1 b random %}
+                                </span>
+                                <p class="text-danger">Note: Proceed to apply for hostel if you meet the above requirements. </p>
+                                
+                            </div>
+                            <a href="" class="btn btn-primary">Apply for Hostel</a>
+
+                        </div>
+                    </div>
+                    </div>
+                
+                {% endif %}
+              </div>             
+                
+            </div>
+            <!-- content-wrapper ends -->
+            <!-- partial:partials/_footer.html -->
+            {% include 'utils/footer.html' %}
+            <!-- partial -->
+          </div>
+          <!-- main-panel ends -->
+        </div>   
+        <!-- page-body-wrapper ends -->
+      {% comment %} </div> {% endcomment %}
+      <!-- container-scroller -->
+    
+{% endblock body %}

@@ -22,5 +22,6 @@ from allocation.views import Onboard
 urlpatterns = [
     path('', Onboard.as_view(), name="Onboard"),
     path('admin/', admin.site.urls),
-    # path('accounts/', include("accounts.urls")),
+    path('accounts/', include("accounts.urls")),
+    path('allocation/', include("allocation.urls")),
 ]

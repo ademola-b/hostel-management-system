@@ -9,19 +9,17 @@
     <title>
         {% block title %}{% endblock %}
     </title>
-    
-    {% block styles %}
-      
-    {% endblock styles %}
+
+    {% block styles %}{% endblock styles %}
     
 </head>
 <body>
     {% block navbar %}
     {% endblock navbar %}
-    {% block content %}
+    {% block body %}
 
-    {% endblock content %}
+    {% endblock body %}
 
-    {% comment %} {% include 'screening/landing/scripts.html' %} {% endcomment %}
+    {% include 'utils/scripts.html' %}
 </body>
 </html>
