@@ -4,7 +4,7 @@ from django.shortcuts import render
 from django.views.generic import TemplateView, View, ListView
 
 
-from .decorators import redirect_anonymous_user
+from .decorators import redirect_anonymous_user, user_profile_checker
 from .models import Hall
 
 
@@ -18,6 +18,7 @@ class DashboardView(View, LoginRequiredMixin):
         return render(request, "dashboard.html")
     
 @method_decorator(redirect_anonymous_user, name='get')
+@method_decorator(user_profile_checker, name='get')
 class Hostels(ListView, LoginRequiredMixin):
     queryset = Hall.objects.all()
     template_name = 'hostel/select-hostel.html'

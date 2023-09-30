@@ -10,17 +10,31 @@ class User(AbstractUser):
     phone = models.CharField(max_length=15, null=True, blank=True)
     is_warden = models.BooleanField(default=False)
 
+    def __str__(self):
+        return self.username
+
 level_choice = [
-    ('', ''),
-    ('', ''),
-    ('', ''),
-    ('', '')
+    ('ND I', 'ND I'),
+    ('ND II', 'ND II'),
+    ('HND I', 'HND I'),
+    ('HND II', 'HND II')
 ]
 
-# class Student(models.Model):
-#     student_id = models.UUIDField(default=uuid.uuid4, unique=True, primary_key=True, editable=False)
-#     user = models.OneToOneField(User, on_delete=models.CASCADE)
-#     department = models.CharField()
-#     level = models.CharField(max_length=5, choices=level_choice)
-#     payment_made = models.BooleanField(default=False)
+class Department(models.Model):
+    dept_id = models.UUIDField(default=uuid.uuid4, unique=True, primary_key=True, editable=False)
+    name = models.CharField(max_length=30)
+
+    def __str__(self):
+        return self.name
+
+class Student(models.Model):
+    student_id = models.UUIDField(default=uuid.uuid4, unique=True, primary_key=True, editable=False)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    department = models.ForeignKey(Department, on_delete=models.CASCADE)
+    level = models.CharField(max_length=7, choices=level_choice)
+    payment_made = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"{self.user.username} - {self.payment_made}"
+    
 

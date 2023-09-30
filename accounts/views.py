@@ -3,10 +3,11 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render, redirect
-from django.views.generic import View, CreateView
+from django.views.generic import View, CreateView, UpdateView
 
 
-from . forms import LoginForm, SignUpForm
+from . forms import LoginForm, SignUpForm, UserUpdateProfileForm, StudentProfileForm
+from . models import Student, User
 # Create your views here.
 class LoginView(View):
     template_name = "auth/login.html"
@@ -57,3 +58,39 @@ class RegisterView(CreateView):
         else:
             messages.error(request, f"An error occured: {form.errors.as_text()}")
             return render(request, self.template_name, {'form':form})
+        
+class UpdateProfileView(UpdateView):
+    template_name = "auth/update_profile.html"
+    form_class = UserUpdateProfileForm
+    second_form_class = StudentProfileForm
+
+    def get(self, request):
+        form1 = self.form_class(request)
+        form2 = self.second_form_class()
+        return render(request, self.template_name, {'form1':form1, 'form2':form2})
+    
+    def post(self, request):
+        form1 = self.form_class(request, request.POST, request.FILES)
+        form2 = self.second_form_class(request.POST)
+        if form1.is_valid() and form2.is_valid():
+            instance1 = form1.save(commit=False)
+            instance2 = form2.save(commit=False)
+            Student.objects.create(
+                user = request.user,
+                department = form2.cleaned_data['department'],
+                level = form2.cleaned_data['level']
+            )
+
+            user = User.objects.get(user_id = request.user.user_id)
+
+            user.first_name = form1.cleaned_data['first_name']
+            user.last_name = form1.cleaned_data['last_name']
+            user.phone = form1.cleaned_data['phone']
+            user.profile_pic = form1.cleaned_data['profile_pic']
+            user.save()
+            messages.success(request, "Profile Successfully Updated, You can proceed with your application")
+            return redirect("allocation:hostel-list")
+        else:
+            messages.error(request, f"{form1.errors.as_text()} {form2.errors.as_text()}")
+            return render(request, self.template_name, {'form1':form1, 'form2':form2})
+        
