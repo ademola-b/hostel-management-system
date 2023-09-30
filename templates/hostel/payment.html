@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% load static %}
+{% block styles %}
+    {% include 'utils/styles.html' %}
+{% endblock styles %}
+
+{% block body %}
+    {% include "utils/navbar.html" %}
+
+    <div class="container-fluid page-body-wrapper">
+        {% include 'utils/aside.html' %}
+        <!-- partial -->
+        <div class="main-panel">
+          <div class="content-wrapper">
+         
+              {% include 'utils/messages.html' %}
+            <div class="row">
+                <div class="col-lg-12 grid-margin stretch-card">
+                    <div class="card">
+                            <div class="card-body">
+                                <h4 class="card-title text-primary">Payment</h4>
+                                <h4 class="mb-5">
+                                    Pay the amount of <span class="text-warning"> {{hall.price}}</span> to get an allocation in <span class="text-warning"> {{hall.name}}</span>
+                                </h4>
+                                
+                            </div>
+                    </div>
+                </div>
+            </div>
+          </div>
+          <!-- content-wrapper ends -->
+          <!-- partial:../../partials/_footer.html -->
+          {% include 'utils/footer.html' %}
+          <!-- partial -->
+        </div>
+        <!-- main-panel ends -->
+      </div>
+
+
+{% endblock body %}

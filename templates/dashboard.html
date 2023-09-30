@@ -8,9 +8,9 @@
         {% include 'utils/navbar.html' %}
         <!-- partial -->
         <div class="container-fluid page-body-wrapper">
-          <div class="theme-setting-wrapper">
+          {% comment %} <div class="theme-setting-wrapper">
      
-        </div>
+          </div> {% endcomment %}
       
           <!-- partial -->
           <!-- partial:partials/_sidebar.html -->
@@ -70,7 +70,7 @@
                                 <p class="text-danger">Note: Proceed to apply for hostel if you meet the above requirements. </p>
                                 
                             </div>
-                            <a href="" class="btn btn-primary">Apply for Hostel</a>
+                            <a href="{% url "allocation:hostel-list" %}" class="btn btn-primary">Apply for Hostel</a>
 
                         </div>
                     </div>

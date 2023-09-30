@@ -1,6 +1,6 @@
 from typing import Any
 from django.contrib import messages
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render, redirect
 from django.views.generic import View, CreateView
@@ -33,7 +33,12 @@ class LoginView(View):
             messages.error(request, f"An error occurred: {form.errors.as_text()}")
         
         return render(request, self.template_name, {'form':form})
-    
+
+
+def logout_request(request):
+    logout(request)
+    return redirect('accounts:login')
+
 class RegisterView(CreateView):
     form_class = SignUpForm
     template_name = 'auth/register.html'
