@@ -66,7 +66,7 @@ class PaymentView(View):
                                 room.current_occupancy += 1
                                 room.save()
                                 messages.success(request, "You have been allocated a room")
-                                #redirect to specified page
+                                return redirect('allocation:allocated-room')
                             else:
                                 #create another room
                                 if hall.room_number <= 0 and hall.status == 'unavailable':
@@ -85,23 +85,27 @@ class PaymentView(View):
                                     AllocatedRooms.objects.create(student = student, room = new_room)
                                     new_room.current_occupancy += 1
                                     new_room.save()
+                                    hall.save()             
                                     messages.success(request, "You have been allocated a room")
+                                    return redirect('allocation:allocated-room')
 
-                                hall.save()             
+
                         else:
                             #create a new room
                             new_room = Room.objects.create(hall=hall, room_num=1)
                             AllocatedRooms.objects.create(student = student, room = new_room)
                             new_room.current_occupancy += 1
                             new_room.save()
-                            messages.success(request, "You have been allocated to a room")          
-
+                            messages.success(request, "You have been allocated to a room") 
+                            return redirect('allocation:allocated-room')
                     else:
                         room = Room.objects.create(hall=hall, room_num = 1)
                         AllocatedRooms.objects.create(student = student, room = room)
                         room.current_occupancy += 1
                         room.save()
-                        messages.success(request, "You have been allocated a room")                
+                        messages.success(request, "You have been allocated a room")   
+                        return redirect('allocation:allocated-room')
+
 
                     #payment logic
                     # raise Exception("Payment Failed. Retry")
@@ -114,6 +118,20 @@ class PaymentView(View):
 
         return render(request, self.template_name, {'hall':hall})
 
+
+class AllocatedRoomView(View):
+    template_name = "hostel/allocated_room.html"
+
+    def get(self, request):
+        try:
+            student = Student.objects.get(user = request.user)
+            alloc_room = AllocatedRooms.objects.get(student = student)
+
+        except AllocatedRooms.DoesNotExist:
+            messages.warning(request, "You have not been allocated a room")
+            return redirect('allocation:hostel-list')
+
+        return render(request, self.template_name, {'alloc_room':alloc_room})
         
 
 
