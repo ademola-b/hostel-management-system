@@ -18,9 +18,9 @@
          
               {% include 'utils/messages.html' %}
             <div class="row">
-                {% if object_list %}
+                {% if halls %}
                     
-                    {% for hall in object_list %}
+                    {% for hall in halls %}
                         <div class="col-lg-4 grid-margin stretch-card">
                             <div class="card">
                                 <a href="{% url "allocation:payment" hall.hall_id %}">

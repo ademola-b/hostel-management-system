@@ -19,13 +19,32 @@ class Onboard(TemplateView):
 @method_decorator(redirect_anonymous_user, name='get')
 class DashboardView(View, LoginRequiredMixin):
     def get(self, request):
-        return render(request, "dashboard.html")
+        try:
+            alloc_room = AllocatedRooms.objects.get(student = request.user.student)
+        
+            return render(request, "dashboard.html", {'alloc_room':alloc_room})
+        except:
+            return render(request, "dashboard.html")
+
     
 @method_decorator(redirect_anonymous_user, name='get')
 @method_decorator(user_profile_checker, name='get')
 class Hostels(ListView, LoginRequiredMixin):
-    queryset = Hall.objects.all()
+    # queryset = Hall.objects.all()
+    model = Hall
+    context_object_name = "halls"
     template_name = 'hostel/select-hostel.html'
+
+    def get_queryset(self):
+        user = self.request.user
+        if user.gender == 'male':
+            halls = Hall.objects.filter(gender = 'boys')
+        else:
+            halls = Hall.objects.filter(gender = 'girls')
+
+        return halls
+    
+    
 
 @method_decorator(redirect_anonymous_user, name='get')
 class PaymentView(View):

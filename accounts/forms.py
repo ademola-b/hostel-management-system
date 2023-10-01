@@ -24,10 +24,18 @@ class SignUpForm(UserCreationForm):
 
 class UserUpdateProfileForm(forms.ModelForm):
 
+    gender_choices = [
+        ('male', 'male'),
+        ('female', 'female')
+    ]
+
     first_name = forms.CharField(required=True, widget=forms.TextInput(attrs={'class':'form-control', 'placeholder':'Enter your first name'}))
     last_name = forms.CharField(required=True, widget=forms.TextInput(attrs={'class':'form-control', 'placeholder':'Enter your last name'}))
     email = forms.EmailField(required=False, max_length=254, help_text='Enter a valid email address', widget=forms.EmailInput(attrs={'id': 'email', 'class': 'form-control', 'placeholder':'Enter your Email Address', 'disabled':'disabled'}))
     phone = forms.CharField(required=True, widget=forms.TextInput(attrs={'class':'form-control', 'placeholder':'Enter your phone number'}))
+    gender = forms.ChoiceField(required=True, choices=gender_choices, widget=forms.Select(attrs={
+        'class': 'form-control select form-select'
+    }))
 
     class Meta:
         model = get_user_model()
@@ -35,7 +43,8 @@ class UserUpdateProfileForm(forms.ModelForm):
             "first_name",
             "last_name",
             "profile_pic",
-            "phone"
+            "phone",
+            "gender"
         ]
     
     def __init__(self, request, *args, **kwargs):
