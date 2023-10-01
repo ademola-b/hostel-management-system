@@ -22,7 +22,14 @@
                                 <h4 class="mb-5">
                                     Pay the amount of <span class="text-warning"> {{hall.price}}</span> to get an allocation in <span class="text-warning"> {{hall.name}}</span>
                                 </h4>
-                                
+
+                                <div class="col-sm-2">
+                                    <form method="POST">
+                                        {% csrf_token %}
+                                        <button class="btn btn-block btn-primary btn-md font-weight-medium auth-form-btn" type="submit">Pay</button>
+                                    </form>
+                                </div>
+  
                             </div>
                     </div>
                 </div>

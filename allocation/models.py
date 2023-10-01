@@ -1,6 +1,8 @@
 import uuid
 from django.db import models
 
+from accounts.models import Student
+
 # Create your models here.
 class Hall(models.Model):
     hall_id = models.UUIDField(default=uuid.uuid4, unique=True, primary_key=True, editable=False)
@@ -14,9 +16,23 @@ class Hall(models.Model):
     def __str__(self):
         return self.name
     
+class Room(models.Model):
+    room_id = models.UUIDField(default=uuid.uuid4, unique=True, primary_key=True, editable=False)
+    room_num = models.IntegerField(unique=True)
+    hall = models.ForeignKey(Hall, on_delete=models.CASCADE)
+    max_capacity = models.IntegerField(default=4)
+    current_occupancy = models.IntegerField(default=0)
 
-# class Room(models.Model):
-#     room_id = models.UUIDField(default=uuid.uuid4, unique=True, primary_key=True, editable=False)
-#     hall = models.ForeignKey(Hall, on_delete=models.CASCADE)
-#     max_capacity = models.IntegerField(default=4)
-#     present_occupancy = models.IntegerField(default=0)
+    def __str__(self):
+        return f"{self.hall.name}-{self.room_num}"
+
+
+class AllocatedRooms(models.Model):
+    student = models.ForeignKey(Student, on_delete=models.CASCADE)
+    room = models.ForeignKey(Room, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"{self.student.user.username} - {self.room.hall.name}"
+
+    
+
