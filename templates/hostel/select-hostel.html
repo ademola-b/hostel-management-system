@@ -23,16 +23,26 @@
                     {% for hall in halls %}
                         <div class="col-lg-4 grid-margin stretch-card">
                             <div class="card">
-                                <a href="{% url "allocation:payment" hall.hall_id %}">
+                                {% if hall.status == 'available' %}
+                                    <a href="{% url "allocation:payment" hall.hall_id %}">
+                                {% endif %}
                                     <div class="card-body">
                                         <h4 class="card-title text-primary">{{hall.name}}</h4>
-                                        <h5 class="font-weight-normal">{{hall.gender}}</h5>
-                                        <h5 class="font-weight-normal">Amount: {{hall.price}}</h5>
-                                        <h5 class="font-weight-normal">Rooms: {{hall.room_number}}</h5>
-                                        <p class="badge {% if hall.status == 'available' %}badge-warning{% else %}badge-danger{% endif %}  text-primary">{{hall.status}} </p>
+                                        <div class="row">
 
+                                            <div class="col-6">
+                                                <h5 class="font-weight-normal">{{hall.gender}}</h5>
+                                            <h5 class="font-weight-normal">Amount: {{hall.price}}</h5>
+                                            <h5 class="font-weight-normal">Rooms: {{hall.room_number}}</h5>
+                                            </div>
+                                            <div class="col-6">
+                                                <img src="{{hall.picture.url}}" alt=" hall" width="70" height="70">
+                                            </div>
+                                        </div>
+                                        
+                                        <p class="badge {% if hall.status == 'available' %}badge-warning{% else %}badge-danger{% endif %}  text-primary">{{hall.status}} </p>
                                     </div>
-                                </a>
+                                {% if hall.status == 'available' %}</a>{% endif %}
                             </div>
                         </div>
                     {% endfor %}

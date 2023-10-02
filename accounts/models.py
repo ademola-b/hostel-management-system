@@ -35,6 +35,7 @@ class Student(models.Model):
     department = models.ForeignKey(Department, on_delete=models.CASCADE)
     level = models.CharField(max_length=7, choices=level_choice)
     payment_made = models.BooleanField(default=False)
+    stripe_checkout_id = models.CharField(max_length=500)
 
     def __str__(self):
         return f"{self.user.username} - {self.payment_made}"

@@ -31,33 +31,29 @@
               {% include 'utils/messages.html' %}
               
               <div class="row">
-                {% if mssg %}
-                <div class="col-md-12 grid-margin stretch-card">
-                  <div class="card">
-                    <div class="card-body">
-                        <div class="d-flex flex-wrap">
-                            <p class="card-title text-danger">{{mssg}}</p>
+              {% if halls %}
+                {% for hall in halls %}
+                  <div class="col-lg-4 grid-margin stretch-card">
+                    <div class="card">
+                      <div class="card-body">
+                       <h4 class="card-title text-primary">{{hall.name}}</h4>
+                              <div class="row">
+                                  <div class="col-6">
+                                      <h5 class="font-weight-normal">For: {{hall.gender}}</h5>
+                                  <h5 class="font-weight-normal">Amount: {{hall.price}}</h5>
+                                  <h5 class="font-weight-normal">Rooms: {{hall.room_number}}</h5>
+                                  </div>
+                                  <div class="col-6">
+                                      <img src="{{hall.picture.url}}" alt=" hall" width="70" height="70">
+                                  </div>
+                              </div>
+                              <p class="badge {% if hall.status == 'available' %}badge-warning{% else %}badge-danger{% endif %}  text-primary">{{hall.status}} </p>
                       </div>
                     </div>
+                    
                   </div>
-                </div>
-                {% elif user_institution %}
-                <div class="col-md-6 grid-margin stretch-card">
-                    <div class="card">
-                        <div class="card-body">
-                            <p class="card-title text-primary">Students Added</p>
-                            <span class="badge badge-warning"><h4 class="text-primary">Total Students: {{students}} </h4></span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6 grid-margin stretch-card">
-                    <div class="card">
-                        <div class="card-body">
-                            <p class="card-title text-primary">Users</p>
-                            <span class="badge badge-warning"><h4 class="text-primary">Total Users in your institution: {{institution_user}} </h4></span>
-                        </div>
-                    </div>
-                </div>
+                {% endfor %}
+                
                 {% else %}
                     <div class="col-6 grid-margin stretch-card">
                     <div class="card">

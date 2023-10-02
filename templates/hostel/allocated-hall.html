@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+{% load static %}
+{% block styles %}
+    {% include 'utils/styles.html' %}
+{% endblock styles %}
+
+{% block title %}Allocated Hall{% endblock title %}
+
+
+{% block body %}
+    {% include "utils/navbar.html" %}
+
+    <div class="container-fluid page-body-wrapper">
+        {% include 'utils/aside.html' %}
+        <!-- partial -->
+        <div class="main-panel">
+          <div class="content-wrapper">
+         
+              {% include 'utils/messages.html' %}
+              <div class="col-lg-12 grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title text-primary">List of Allocated Students</h4>
+                        <div class="row">
+                            {% if alloc_stds %}
+                                <div class="table-responsive">
+                                    <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                        <th>Name</th>
+                                        <th>Picture</th>
+                                        <th>Department</th>
+                                        <th>Level</th>
+                                        <th>Hall</th>
+                                        <th>Room</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for student in alloc_stds %}
+                                        <tr>
+                                            <td>
+                                            {{student.student.user.first_name | title}} {{student.student.user.last_name | title}}
+                                            </td>
+                                            <td class="py-1">
+                                            <img src="{{student.student.user.profile_pic.url}}" alt="image"/>
+                                            </td>
+                                            <td>
+                                            {{student.student.department.name}}
+                                            </td>
+                                            <td>
+                                            {{student.student.level}}
+                                            </td>
+                                            <td>
+                                            {{student.room.hall.name}}
+                                            </td>
+                                            <td>
+                                                <span class="badge badge-success text-lowercase">{{student.room.room_num}}</span>
+                                            </td> 
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                    </table>
+                                </div>
+                            
+                            {% else %}
+                                <div class="col-lg-12 grid-margin stretch-card">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <h3 class="text-danger text-center">No Student has been allocated</h3>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endif %}           
+                        </div>
+                    </div>
+                </div>
+              </div>
+            
+          </div>
+          <!-- content-wrapper ends -->
+          <!-- partial:../../partials/_footer.html -->
+          {% include 'utils/footer.html' %}
+          <!-- partial -->
+        </div>
+        <!-- main-panel ends -->
+      </div>
+
+
+{% endblock body %}
