@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from . models import User, Department, Student
+from . models import User, Department, Student, SchoolFeePaidStudent
 # Register your models here.
 class UserAdmin(UserAdmin):
     list_display = ('username', 'email', 'is_warden', 'is_active')
@@ -28,5 +28,6 @@ class UserAdmin(UserAdmin):
     )
 
 admin.site.register(User,UserAdmin)
-admin.site.register(Department)
-admin.site.register(Student)
+models = [Department, Student, SchoolFeePaidStudent]
+for model in models:
+    admin.site.register(model)

@@ -9,7 +9,7 @@ from allocation.models import AllocatedRooms
 
 
 from . forms import LoginForm, SignUpForm, UserUpdateProfileForm, StudentProfileForm
-from . models import Student, User
+from . models import Student, User, SchoolFeePaidStudent
 # Create your views here.
 class LoginView(View):
     template_name = "auth/login.html"
@@ -26,6 +26,7 @@ class LoginView(View):
             user = authenticate(username=username, password=password)
             if user is not None:
                 if user.is_active:
+                    print(f"profile - {user.profile_pic}")
                     login(request, user)
                     return redirect('allocation:dashboard')
                 else:
@@ -53,13 +54,17 @@ class RegisterView(CreateView):
     def post(self, request: HttpRequest, *args: str, **kwargs: Any):
         form = self.form_class(request.POST)
         if form.is_valid():
-            print("valid")
-            form.save()
-            messages.success(request, "Account succesfully created")
-            return redirect('accounts:login')
+            existing_payments = SchoolFeePaidStudent.objects.filter(registration_number = request.POST['username']).first()
+
+            if existing_payments:
+                form.save()
+                messages.success(request, "Account succesfully created")
+                return redirect('accounts:login')
+            else:
+                messages.error(request, "The provided registration number has not school fee record, contact your student affair if other wise.")
         else:
             messages.error(request, f"An error occured: {form.errors.as_text()}")
-            return render(request, self.template_name, {'form':form})
+        return render(request, self.template_name, {'form':form})
         
 class ProfileView(View):
     def get(self, request):

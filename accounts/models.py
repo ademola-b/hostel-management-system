@@ -28,6 +28,15 @@ class Department(models.Model):
 
     def __str__(self):
         return self.name
+    
+class SchoolFeePaidStudent(models.Model):
+    std_id = models.UUIDField(default=uuid.uuid4, unique=True, primary_key=True, editable=False)
+    registration_number = models.CharField(max_length=30)
+    payment_date = models.DateTimeField(auto_now_add=True)
+    receipt_number = models.CharField(max_length=20, unique=True)
+
+    def __str__(self):
+        return f'{self.registration_number}'
 
 class Student(models.Model):
     student_id = models.UUIDField(default=uuid.uuid4, unique=True, primary_key=True, editable=False)

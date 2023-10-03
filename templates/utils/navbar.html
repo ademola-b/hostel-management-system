@@ -24,7 +24,7 @@
        
         <li class="nav-item nav-profile dropdown">
           <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown">
-            {% if request.user.is_anonymous %}
+            {% if request.user.is_anonymous or request.user.profile_pic == '' %}
               <img src="{% static 'img/default.jpg' %}" alt="profile"/>
             {% else %}
               <img src="{{request.user.profile_pic.url}}" alt="profile_pic"/>
