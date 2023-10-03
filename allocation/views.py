@@ -80,15 +80,11 @@ class PaymentView(View):
             #get allocated hall
             try:
                 with transaction.atomic():
-                    # student.payment_made = True
-                    # student.save()
-                    # messages.success(request, "Payment Successful")
 
                     alloc_room = AllocatedRooms.objects.exists()
 
                     if alloc_room:
                         #get last room created
-                        # room = Room.objects.latest('room_id')
                         room = Room.objects.filter(hall=hall).last()
                         if room is not None:
                             print(f"room occ - {room.room_num} - {room.current_occupancy}")
@@ -96,14 +92,12 @@ class PaymentView(View):
                                 AllocatedRooms.objects.create(student = student, room = room)
                                 room.current_occupancy += 1
                                 room.save()
-                                messages.success(request, "You have been allocated a room")
-                                # return redirect('allocation:allocated-room')
+                                
                             else:
                                 #create another room
                                 if hall.room_number <= 0 and hall.status == 'unavailable':
                                     student.payment_made = False
                                     student.save()
-                                    #reverse payment
                                     messages.error(request, "Hall is occupied, kindly select another hall")
                                     # return redirect('allocation:hostel-list')
                                 else:
@@ -117,23 +111,19 @@ class PaymentView(View):
                                     new_room.current_occupancy += 1
                                     new_room.save()
                                     hall.save()             
-                                    messages.success(request, "You have been allocated a room")
-                                    # return redirect('allocation:allocated-room')
                         else:
                             #create a new room
                             new_room = Room.objects.create(hall=hall, room_num=1)
                             AllocatedRooms.objects.create(student = student, room = new_room)
                             new_room.current_occupancy += 1
                             new_room.save()
-                            messages.success(request, "You have been allocated to a room4") 
-                            # return redirect('allocation:allocated-room')
+                            
                     else:
                         room = Room.objects.create(hall=hall, room_num = 1)
                         AllocatedRooms.objects.create(student = student, room = room)
                         room.current_occupancy += 1
                         room.save()
                         messages.success(request, "You have been allocated a room5")   
-                        # return redirect('allocation:allocated-room')
 
                     stripe.api_key = settings.STRIPE_SECRET_KEY
                     #payment logic
@@ -145,7 +135,6 @@ class PaymentView(View):
                                     'currency': 'USD',
                                     'product_data': {
                                         'name': hall.name,
-
                                     },
                                     'unit_amount': hall.price
                                 },
@@ -177,13 +166,14 @@ class PaymentSuccessfulView(View):
         user_payment.stripe_checkout_id = checkout_session_id
         user_payment.payment_made = True
         user_payment.save()
+        messages.success(request, "You have been allocated to a room") 
 
         return redirect('allocation:allocated-room')
 
 class PaymentCancelledView(View):
     def get(self, request):
-        return render(request, 'hostel/select-hostel.html')
-
+        messages.warning(request, "Payment Cancelled, try again")
+        return redirect("allocation:hostel-list")
 
 @csrf_exempt
 def stripe_webhook(request):

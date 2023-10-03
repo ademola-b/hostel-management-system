@@ -5,6 +5,8 @@ from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render, redirect
 from django.views.generic import View, CreateView, UpdateView
 
+from allocation.models import AllocatedRooms
+
 
 from . forms import LoginForm, SignUpForm, UserUpdateProfileForm, StudentProfileForm
 from . models import Student, User
@@ -59,6 +61,17 @@ class RegisterView(CreateView):
             messages.error(request, f"An error occured: {form.errors.as_text()}")
             return render(request, self.template_name, {'form':form})
         
+class ProfileView(View):
+    def get(self, request):
+        form = UserUpdateProfileForm(request)
+        user = request.user
+        try:
+            alloc = AllocatedRooms.objects.get(student=user.student)
+            return render(request, "hostel/profile.html", {'form':form, 'user':user, 'alloc':alloc})
+        except:
+            return render(request, "hostel/profile.html", {'form':form, 'user':user})
+
+
 class UpdateProfileView(UpdateView):
     template_name = "auth/update_profile.html"
     form_class = UserUpdateProfileForm

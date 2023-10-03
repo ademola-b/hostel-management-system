@@ -16,10 +16,7 @@
                 <i class="icon-search"></i>
               </span>
             </div>
-            {% comment %} <form action="{% url 'allocation:search_accused' %}" method="post">
-              {% csrf_token %}
-              <input type="text" class="form-control" id="navbar-search-input" name="query" placeholder="Search Accused Name, Institution Name" aria-label="search" aria-describedby="search">
-            </form> {% endcomment %}
+            
           </div>
         </li>
       </ul>
@@ -27,14 +24,15 @@
        
         <li class="nav-item nav-profile dropdown">
           <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown">
-            <img src="{% static 'img/default.jpg' %}" alt="profile"/>
+            {% if request.user.is_anonymous %}
+              <img src="{% static 'img/default.jpg' %}" alt="profile"/>
+            {% else %}
+              <img src="{{request.user.profile_pic.url}}" alt="profile_pic"/>
+            {% endif %}
           </a>
           <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
-            {% comment %} {% if request.user.is_institution_admin %} {% endcomment %}
-            <a class="dropdown-item" href="#">
-              {% comment %} {% else %}
-              <a class="dropdown-item" href="{% url 'accounts:profile' request.user.pk %}">
-            {% endif %} {% endcomment %}
+            <a class="dropdown-item" href="{% url "accounts:profile" %}">
+       
               <i class="ti-settings text-primary"></i>
               Profile
             </a>

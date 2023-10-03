@@ -59,7 +59,7 @@ class StudentProfileForm(forms.ModelForm):
     ('ND II', 'ND II'),
     ('HND I', 'HND I'),
     ('HND II', 'HND II')
-]
+    ]
 
     department = forms.ModelChoiceField(required=True, queryset=Department.objects.all(), empty_label="Select Department", widget=forms.Select(
         attrs={
@@ -78,6 +78,17 @@ class StudentProfileForm(forms.ModelForm):
             "department",
             "level"
         ]
+
+# class ProfileForm(forms.ModelForm):
+#     name = forms.CharField(required=False, widget=forms.TextInput(attrs={'id':'name','class':'form-control', 'placeholder':'Enter User Full Name', 'disabled': True}))
+#     profile_pic = forms.ImageField(required=True, widget=forms.FileInput(attrs={'id':'image', 'name':"picture", 'class':'form-control'}))
+
+#     class Meta:
+#         model = get_user_model()
+#         fields = [
+#             'name',
+#             'picture'
+#         ]
 
 
       
