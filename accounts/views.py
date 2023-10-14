@@ -8,8 +8,8 @@ from django.views.generic import View, CreateView, UpdateView
 from allocation.models import AllocatedRooms
 
 
-from . forms import LoginForm, SignUpForm, UserUpdateProfileForm, StudentProfileForm
-from . models import Student, User, SchoolFeePaidStudent
+from . forms import LoginForm, SignUpForm, UserUpdateProfileForm, StudentProfileForm, StudentContactForm
+from . models import User, Student, StudentContact, SchoolFeePaidStudent
 # Create your views here.
 class LoginView(View):
     template_name = "auth/login.html"
@@ -83,22 +83,35 @@ class UpdateProfileView(UpdateView):
     template_name = "auth/update_profile.html"
     form_class = UserUpdateProfileForm
     second_form_class = StudentProfileForm
+    third_form_class = StudentContactForm
 
     def get(self, request):
         form1 = self.form_class(request)
         form2 = self.second_form_class()
-        return render(request, self.template_name, {'form1':form1, 'form2':form2})
+        form3 = self.third_form_class()
+        return render(request, self.template_name, {'form1':form1, 'form2':form2, 'form3':form3})
     
     def post(self, request):
         form1 = self.form_class(request, request.POST, request.FILES)
         form2 = self.second_form_class(request.POST)
-        if form1.is_valid() and form2.is_valid():
+        form3 = self.third_form_class(request.POST)
+        if form1.is_valid() and form2.is_valid() and form3.is_valid():
             instance1 = form1.save(commit=False)
             instance2 = form2.save(commit=False)
-            Student.objects.create(
+
+            student = Student.objects.create(
                 user = request.user,
+                school = form2.cleaned_data['school'],
                 department = form2.cleaned_data['department'],
                 level = form2.cleaned_data['level']
+            )
+
+            StudentContact.objects.create(
+                student = student,
+                address = form3.cleaned_data['address'],
+                next_of_kin_name = form3.cleaned_data['next_of_kin_name'],
+                next_of_kin_phone = form3.cleaned_data['next_of_kin_phone'],
+                next_of_kin_address = form3.cleaned_data['next_of_kin_address']
             )
 
             user = User.objects.get(user_id = request.user.user_id)
@@ -107,6 +120,7 @@ class UpdateProfileView(UpdateView):
             user.last_name = form1.cleaned_data['last_name']
             user.phone = form1.cleaned_data['phone']
             user.profile_pic = form1.cleaned_data['profile_pic']
+            user.gender = form1.cleaned_data['gender']
             user.save()
             messages.success(request, "Profile Successfully Updated, You can proceed with your application")
             return redirect("allocation:hostel-list")
