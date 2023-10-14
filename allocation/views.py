@@ -12,7 +12,7 @@ import time
 
 from .forms import FilterForm
 
-from accounts.models import Student
+from accounts.models import Student, StudentContact
 
 
 from .decorators import redirect_anonymous_user, user_profile_checker
@@ -287,12 +287,27 @@ class RoomDetailsView(View):
         try:
             student_alloc_room = AllocatedRooms.objects.get(student = self.request.user.student)
             allocated_rooms = AllocatedRooms.objects.filter(room = student_alloc_room.room)
-            print(f"all{allocated_rooms}")
             
             allocated_rooms = allocated_rooms.exclude(student = request.user.student)
-            print(f"alloc{allocated_rooms}")
             students = [allocated_room.student for allocated_room in allocated_rooms]
             return render(request, "hostel/room-details.html", {"student_alloc":student_alloc_room, 'students':students})
         except:
             return render(request, "hostel/room-details.html", {})
+        
+
+class FullDetails(View):
+    def get(self, request):
+        try:
+            student_room = AllocatedRooms.objects.get(student = self.request.user.student)
+            personal_info = Student.objects.get(user = request.user)
+            next_of_kin = StudentContact.objects.get(student = request.user.student)
+
+            # print(f"per{personal_info}")
+
+            return render(request, "hostel/full-details.html", {'student_room':student_room, 'personal_info':personal_info, 'next_of_kin':next_of_kin})
+        
+        except StudentContact.DoesNotExist:
+            return render(request, "hostel/full-details.html", {'student_room':student_room, 'personal_info':personal_info,})
+
+
         

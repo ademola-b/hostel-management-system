@@ -3,7 +3,7 @@ from .views import (DashboardView, Hostels, PaymentView,
                     AllocatedRoomView, RegisteredStudentsView, 
                     AllocatedStudentsView, AllocatedHallView,
                     PaymentSuccessfulView, PaymentCancelledView,
-                    RoomDetailsView)
+                    RoomDetailsView, FullDetails)
 
 from . import views
 
@@ -21,6 +21,7 @@ urlpatterns = [
     path('payment_cancelled', PaymentCancelledView.as_view(), name="payment_cancelled"),
     # path('stripe_webhook', views.stripe_webhook, name="stripe_webhook"),
 
-    path('room-details/', RoomDetailsView.as_view(), name="room_detail")
+    path('room-details/', RoomDetailsView.as_view(), name="room_detail"),
+    path('full-details/', FullDetails.as_view(), name="full_details"),
 
 ]

@@ -126,5 +126,5 @@ class UpdateProfileView(UpdateView):
             return redirect("allocation:hostel-list")
         else:
             messages.error(request, f"{form1.errors.as_text()} {form2.errors.as_text()}")
-            return render(request, self.template_name, {'form1':form1, 'form2':form2})
+            return render(request, self.template_name, {'form1':form1, 'form2':form2, 'form3':form3})
         

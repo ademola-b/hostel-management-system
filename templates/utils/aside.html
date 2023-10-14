@@ -24,15 +24,15 @@
                 </ul>
               </div>
         </li>
-        <li class="nav-item {% if 'manage-users' in request.path %}active{% endif %}">
-            <a class="nav-link" href="#">
-            <i class="icon-head menu-icon"></i>
-            <span class="menu-title">Manage Hostels</span>
-            </a>
-        </li>
+          {% comment %} <li class="nav-item {% if 'manage-users' in request.path %}active{% endif %}">
+              <a class="nav-link" href="#">
+              <i class="icon-head menu-icon"></i>
+              <span class="menu-title">Manage Hostels</span>
+              </a>
+          </li> {% endcomment %}
       {% else %}
         
-        <li class="nav-item {% if 'select-hostel' in request.path or 'payment' in request.path or 'allocated-room' in request.path %}active{% endif %} ">
+        <li class="nav-item {% if 'select-hostel' in request.path or 'payment' in request.path or 'allocated-room' in request.path or 'room-details' in request.path %}active{% endif %} ">
           <a class="nav-link " data-toggle="collapse" href="#form-elements" aria-expanded="false" aria-controls="form-elements">
             <i class="icon-columns menu-icon"></i>
             <span class="menu-title">Hostel</span>
@@ -49,6 +49,21 @@
             </ul>
           </div>
         </li>
+
+        <li class="nav-item {% if 'full-details' in request.path or 'payment-receipts' in request.path %}active{% endif %}">
+          <a class="nav-link" data-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
+            <i class="icon-paper menu-icon"></i>
+            <span class="menu-title">Documents</span>
+            <i class="menu-arrow"></i>
+          </a>
+          <div class="collapse" id="ui-basic">
+            <ul class="nav flex-column sub-menu">
+              <li class="nav-item"> <a class="nav-link" href="{% url "allocation:full_details" %}">Form C</a></li>
+              {% comment %} <li class="nav-item"> <a class="nav-link" href="../../pages/ui-features/typography.html">Payment Receipts</a></li> {% endcomment %}
+            </ul>
+          </div>
+        </li>
+       
       {% endif %}
 
     </ul>

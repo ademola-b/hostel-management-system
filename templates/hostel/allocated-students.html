@@ -42,7 +42,9 @@
                                             {{student.student.user.first_name | title}} {{student.student.user.last_name | title}}
                                             </td>
                                             <td class="py-1">
-                                            <img src="{{student.student.user.profile_pic.url}}" alt="image"/>
+                                                <button type="button" class="btn btn-link" data-toggle="modal" data-target="#myModal{{forloop.counter}}">
+                                                    <img src="{{student.student.user.profile_pic.url}}" alt="image"/>
+                                                </button>
                                             </td>
                                             <td>
                                             {{student.student.department.name}}
@@ -57,6 +59,8 @@
                                                 <span class="badge badge-success text-lowercase">{{student.room.room_num}}</span>
                                             </td> 
                                         </tr>
+
+                                        {% include "utils/allocated-student-modal.html" %}
                                         {% endfor %}
                                     </tbody>
                                     </table>

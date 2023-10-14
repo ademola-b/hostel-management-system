@@ -57,7 +57,9 @@
                                                                     {{student.user.first_name | title}} {{student.user.last_name | title}}
                                                                 </td>
                                                                 <td class="py-1">
-                                                                    <img src="{{student.user.profile_pic.url}}" alt="image"/>
+                                                                    <button type="button" class="btn btn-link" data-toggle="modal" data-target="#profilePicModal{{forloop.counter}}">
+                                                                        <img src="{{student.user.profile_pic.url}}" alt="image"/>
+                                                                    </button>
                                                                 </td>
                                                                 <td>
                                                                     {{student.department.name}}
@@ -69,6 +71,21 @@
                                                                     {{student.user.phone}}
                                                                 </td>
                                                         </tr>
+                                                        <div class="modal fade" id="profilePicModal{{forloop.counter}}">
+                                                            <div class="modal-dialog">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <h5 class="modal-title">{{student.user.first_name}} Picture</h5>
+                                                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                    </div>
+                                                                    <div class="modal-body" style="text-align: center;">
+                                                                        <img src="{{student.user.profile_pic.url}}" alt="image" width="200" height="200"/>
+                                                                        <hr/>
+                                                                    </div>
+                                                               
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                         {% endfor %}
                                                     </tbody>
                                                 </table>
