@@ -379,7 +379,16 @@ class AllocatedHallView(View):
     def get(self, request, pk):
         alloc_hall = AllocatedRooms.objects.filter(room__hall__hall_id=pk)
         return render(request, "hostel/allocated-students.html", {'hall':alloc_hall})
-    
+
+
+class RoomDetailsView(View):
+    def get(self, request):
+        student_alloc_room = AllocatedRooms.objects.get(student = self.request.user.student)
+        allocated_rooms = AllocatedRooms.objects.filter(room = student_alloc_room.room)
+        print(f"all{allocated_rooms}")
         
-
-
+        allocated_rooms = allocated_rooms.exclude(student = request.user.student)
+        print(f"alloc{allocated_rooms}")
+        students = [allocated_room.student for allocated_room in allocated_rooms]
+        return render(request, "hostel/room-details.html", {"student_alloc":student_alloc_room, 'students':students})
+        

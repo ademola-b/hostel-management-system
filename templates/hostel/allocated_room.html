@@ -27,7 +27,7 @@
                                         <h5 class="font-weight-normal">Hall: {{alloc_room.room.hall.name}}</h5>
                                         <h5 class="font-weight-normal">Room Number: {{alloc_room.room.room_num}}</h5>
                                         <div class="col-lg-6">
-                                            <button class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn" type="submit">Get Gate Pass</button>
+                                            <a href="{% url "allocation:room_detail" %}" class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn" type="submit">View Room Details</a>
                                         </div>
                                         
                                     </div>

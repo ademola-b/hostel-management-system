@@ -2,7 +2,8 @@ from django.urls import path
 from .views import (DashboardView, Hostels, PaymentView, 
                     AllocatedRoomView, RegisteredStudentsView, 
                     AllocatedStudentsView, AllocatedHallView,
-                    PaymentSuccessfulView, PaymentCancelledView)
+                    PaymentSuccessfulView, PaymentCancelledView,
+                    RoomDetailsView)
 
 from . import views
 
@@ -19,5 +20,7 @@ urlpatterns = [
     path('payment_successful/<str:pk>/', PaymentSuccessfulView.as_view(), name="payment_successful"),
     path('payment_cancelled', PaymentCancelledView.as_view(), name="payment_cancelled"),
     # path('stripe_webhook', views.stripe_webhook, name="stripe_webhook"),
+
+    path('room-details/', RoomDetailsView.as_view(), name="room_detail")
 
 ]
