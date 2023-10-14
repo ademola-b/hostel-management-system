@@ -11,6 +11,9 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 import os
 from pathlib import Path
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -23,7 +26,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-t7_fnxr7md^@3giwqo8@cs5t*(vd)z7g=g#_i!jc9ihg52ksnu'
+SECRET_KEY = os.getenv("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -85,7 +88,7 @@ WSGI_APPLICATION = 'hms.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME': BASE_DIR / os.getenv("db"),
     }
 }
 
@@ -135,7 +138,7 @@ MEDIA_URL = 'media/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-STRIPE_SECRET_KEY = 'sk_test_51Nwn19HGkS3dstn5VTlpr2MYAx9ApTU9rr9yhrEb4sw0sstJ6v6ls35JO7bjXjHTD5mxku9UfIX80fdvvd3DhABg00jDYEYHCn'
-STRIPE_PUBLISHABLE_KEY = 'pk_test_51Nwn19HGkS3dstn5kC66Kog9C8Wrn6Dopx4MCj99qbzb2zRLzUpkWZ6Q3oWcB1GY4dYKjOE0ikhYcDUyEVAR4tg800PpbYmKkM'
+STRIPE_SECRET_KEY = os.getenv("STRIPE_SECRET_KEY")
+STRIPE_PUBLISHABLE_KEY = os.getenv("STRIPE_PUBLISHABLE_KEY")
 
-REDIRECT_DOMAIN = 'http://127.0.0.1:8000/'
+REDIRECT_DOMAIN = os.getenv("REDIRECT_DOMAIN")

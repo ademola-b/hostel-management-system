@@ -25,6 +25,8 @@ class LoginView(View):
             password = form.cleaned_data.get('password')
             user = authenticate(username=username, password=password)
             if user is not None:
+                if user.is_superuser:
+                    return redirect('accounts:admin_page')
                 if user.is_active:
                     print(f"profile - {user.profile_pic}")
                     login(request, user)

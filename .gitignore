@@ -1,2 +1,3 @@
 hmsenv/
 db.sqlite3
+.env

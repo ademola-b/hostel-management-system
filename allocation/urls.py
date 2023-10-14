@@ -16,7 +16,7 @@ urlpatterns = [
     path('allocated-students/', AllocatedStudentsView.as_view(), name="allocated-students"),
     path('allocated-hall/', AllocatedHallView.as_view(), name="allocated-hall"),
 
-    path('payment_successful', PaymentSuccessfulView.as_view(), name="payment_successful"),
+    path('payment_successful/<str:pk>/', PaymentSuccessfulView.as_view(), name="payment_successful"),
     path('payment_cancelled', PaymentCancelledView.as_view(), name="payment_cancelled"),
     # path('stripe_webhook', views.stripe_webhook, name="stripe_webhook"),
 
