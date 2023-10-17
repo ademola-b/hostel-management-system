@@ -308,6 +308,8 @@ class FullDetails(View):
         
         except StudentContact.DoesNotExist:
             return render(request, "hostel/full-details.html", {'student_room':student_room, 'personal_info':personal_info,})
+        except:
+            return render(request, "hostel/full-details.html", {'error':'No Record Found'})
 
 
         

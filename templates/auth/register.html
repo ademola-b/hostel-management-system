@@ -17,24 +17,48 @@
                 
                 <h6 class="font-weight-light">Register an account.</h6>
                 <form class="forms-sample" method="POST">
-                  {% include 'utils/messages.html' %}
+                  {% comment %} {% include 'utils/messages.html' %} {% endcomment %}
                   {% csrf_token %}
 
                     <div class="form-group">
                         <label for="username">Registration Number</label>
                         {{form.username}}
+
+                        {% if form.username.errors %}
+                                <div class="alert alert-danger mt-2">
+                                    {{form.username.errors}}
+                                </div>
+                        {% endif %}
                     </div>
                     <div class="form-group">
                         <label for="email">Email Address</label>
                         {{form.email}}
+
+                        {% if form.email.errors %}
+                                <div class="alert alert-danger mt-2">
+                                    {{form.email.errors}}
+                                </div>
+                        {% endif %}
                     </div>
                     <div class="form-group">
                         <label for="password">Password</label>
                         {{form.password1}}
+
+                        {% if form.password1.errors %}
+                                <div class="alert alert-danger mt-2">
+                                    {{form.password1.errors}}
+                                </div>
+                        {% endif %}
                     </div>
                     <div class="form-group">
                         <label for="password2">Confirm Password</label>
                         {{form.password2}}
+
+                        {% if form.password2.errors %}
+                                <div class="alert alert-danger mt-2">
+                                    {{form.password2.errors}}
+                                </div>
+                        {% endif %}
                     </div>
                     <div class="mt-3">
                         <button class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn" type="submit">Sign Up</button>

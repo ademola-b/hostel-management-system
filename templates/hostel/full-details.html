@@ -24,117 +24,131 @@
                                         <h3 class="text-primary">Full Details</h3>
                                         <hr/>
                                         <div class="table-responsive">
-                                            <table class="table table-bordered">
-                                                {% if student_room %}
-                                                    <tr>
-                                                        <td colspan="4">
-                                                            <h4 class="card-title text-dark">Room Related Information</h4>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>
-                                                            <h5 class="font-weight-bold">Hostel Name</h5>
-                                                        </td>
-                                                        <td>
-                                                            <h5 class="font-weight-normal">{{student_room.room.hall.name}}</h5>
-                                                        </td>
-                                                        <td>
-                                                            <h5 class="font-weight-bold">Room Number</h5>
-                                                        </td>
-                                                        <td>
-                                                            <h5 class="font-weight-normal">{{student_room.room.room_num}}</h5>
-                                                        </td>
-                                                        <td>
-                                                            <h5 class="font-weight-bold">Amount Paid</h5>
-                                                        </td>
-                                                        <td>
-                                                            <h5 class="font-weight-normal">{{student_room.room.hall.price}}</h5>
-                                                        </td>
-                                                    </tr>   
+                                            {% if error %}
+                                                <div class="col-lg-12 grid-margin stretch-card">
+                                                    <div class="card">
+                                                        <div class="card-body">
+                                                            <h3 class="text-danger text-center">{{error}}</h3>
+                                                        </div>
+                                                    </div>
+                                            </div>
+                                            {% else %}
+                                                <table class="table table-bordered">
+                                                    {% if student_room %}
+                                                        <tr>
+                                                            <td colspan="4">
+                                                                <h4 class="card-title text-dark">Room Related Information</h4>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <h5 class="font-weight-bold">Hostel Name</h5>
+                                                            </td>
+                                                            <td>
+                                                                <h5 class="font-weight-normal">{{student_room.room.hall.name}}</h5>
+                                                            </td>
+                                                            <td>
+                                                                <h5 class="font-weight-bold">Room Number</h5>
+                                                            </td>
+                                                            <td>
+                                                                <h5 class="font-weight-normal">{{student_room.room.room_num}}</h5>
+                                                            </td>
+                                                            <td>
+                                                                <h5 class="font-weight-bold">Amount Paid</h5>
+                                                            </td>
+                                                            <td>
+                                                                <h5 class="font-weight-normal">{{student_room.room.hall.price}}</h5>
+                                                            </td>
+                                                        </tr>   
+                                                        {% endif %}
+                                                        {% if personal_info %}
+                                                        <tr>
+                                                            <td colspan="6">
+                                                                <h4 class="card-title text-dark">Personal Information</h4>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <h5 class="font-weight-bold">Full Name</h5>
+                                                            </td>
+                                                            <td>
+                                                                <h5 class="font-weight-normal">{{personal_info.user.first_name}} {{personal_info.user.last_name}}</h5>
+                                                            </td>
+                                                            <td>
+                                                                <h5 class="font-weight-bold">Matric Number</h5>
+                                                            </td>
+                                                            <td>
+                                                                <h5 class="font-weight-normal">{{personal_info.user.username}}</h5>
+                                                            </td>
+                                                            <td>
+                                                                <img src="{{personal_info.user.profile_pic.url}}" width="100" height="100"/>
+                                                            </td>
+                                                        </tr>   
+                                                        <tr>
+                                                            <td>
+                                                                <h5 class="font-weight-bold">Email Address</h5>
+                                                            </td>
+                                                            <td>
+                                                                <h5 class="font-weight-normal">{{personal_info.user.email}}</h5>
+                                                            </td>
+                                                            <td>
+                                                                <h5 class="font-weight-bold">Phone Number</h5>
+                                                            </td>
+                                                            <td>
+                                                                <h5 class="font-weight-normal">{{personal_info.user.phone}}</h5>
+                                                            </td>
+                                                            <td>
+                                                                <h5 class="font-weight-bold">Department</h5>
+                                                            </td>
+                                                            <td>
+                                                                <h5 class="font-weight-normal">{{personal_info.department.name}}</h5>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <h5 class="font-weight-bold">Gender</h5>
+                                                            </td>
+                                                            <td>
+                                                                <h5 class="font-weight-normal">{{personal_info.user.gender}}</h5>
+                                                            </td>
+                                                            <td>
+                                                                <h5 class="font-weight-bold">Level</h5>
+                                                            </td>
+                                                            <td>
+                                                                <h5 class="font-weight-normal">{{personal_info.level}}</h5>
+                                                            </td>
+                                                        </tr>   
+                                                        {% endif %}
+                                                        {% if next_of_kin %}
+                                                        <tr>
+                                                            <td colspan="6">
+                                                                <h4 class="card-title text-dark">Next of Kin Info</h4>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <h5 class="font-weight-bold">Name</h5>
+                                                            </td>
+                                                            <td>
+                                                                <h5 class="font-weight-normal">{{next_of_kin.next_of_kin_name}}</h5>
+                                                            </td>
+                                                            <td>
+                                                                <h5 class="font-weight-bold">Phone</h5>
+                                                            </td>
+                                                            <td>
+                                                                <h5 class="font-weight-normal">{{next_of_kin.next_of_kin_phone}}</h5>
+                                                            </td>
+                                                            <td>
+                                                                <h5 class="font-weight-bold">Address</h5>
+                                                            </td>
+                                                            <td>
+                                                                <h5 class="font-weight-normal">{{next_of_kin.next_of_kin_address}}</h5>
+                                                            </td>
+                                                        </tr>   
                                                     {% endif %}
-                                                    {% if personal_info %}
-                                                    <tr>
-                                                        <td colspan="6">
-                                                            <h4 class="card-title text-dark">Personal Information</h4>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>
-                                                            <h5 class="font-weight-bold">Full Name</h5>
-                                                        </td>
-                                                        <td>
-                                                            <h5 class="font-weight-normal">{{personal_info.user.first_name}} {{personal_info.user.last_name}}</h5>
-                                                        </td>
-                                                        <td>
-                                                            <h5 class="font-weight-bold">Matric Number</h5>
-                                                        </td>
-                                                        <td>
-                                                            <h5 class="font-weight-normal">{{personal_info.user.username}}</h5>
-                                                        </td>
-                                                        <td>
-                                                            <h5 class="font-weight-bold">Email Address</h5>
-                                                        </td>
-                                                        <td>
-                                                            <h5 class="font-weight-normal">{{personal_info.user.email}}</h5>
-                                                        </td>
-                                                    </tr>   
-                                                    <tr>
-                                                        <td>
-                                                            <h5 class="font-weight-bold">Phone Number</h5>
-                                                        </td>
-                                                        <td>
-                                                            <h5 class="font-weight-normal">{{personal_info.user.phone}}</h5>
-                                                        </td>
-                                                        <td>
-                                                            <h5 class="font-weight-bold">Gender</h5>
-                                                        </td>
-                                                        <td>
-                                                            <h5 class="font-weight-normal">{{personal_info.user.gender}}</h5>
-                                                        </td>
-                                                        <td>
-                                                            <h5 class="font-weight-bold">Department</h5>
-                                                        </td>
-                                                        <td>
-                                                            <h5 class="font-weight-normal">{{personal_info.department.name}}</h5>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>
-                                                            <h5 class="font-weight-bold">Level</h5>
-                                                        </td>
-                                                        <td>
-                                                            <h5 class="font-weight-normal">{{personal_info.level}}</h5>
-                                                        </td>
-                                                    </tr>   
-                                                    {% endif %}
-                                                    {% if next_of_kin %}
-                                                    <tr>
-                                                        <td colspan="6">
-                                                            <h4 class="card-title text-dark">Next of Kin Info</h4>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>
-                                                            <h5 class="font-weight-bold">Name</h5>
-                                                        </td>
-                                                        <td>
-                                                            <h5 class="font-weight-normal">{{next_of_kin.next_of_kin_name}}</h5>
-                                                        </td>
-                                                        <td>
-                                                            <h5 class="font-weight-bold">Phone</h5>
-                                                        </td>
-                                                        <td>
-                                                            <h5 class="font-weight-normal">{{next_of_kin.next_of_kin_phone}}</h5>
-                                                        </td>
-                                                        <td>
-                                                            <h5 class="font-weight-bold">Address</h5>
-                                                        </td>
-                                                        <td>
-                                                            <h5 class="font-weight-normal">{{next_of_kin.next_of_kin_address}}</h5>
-                                                        </td>
-                                                    </tr>   
-                                                {% endif %}
-                                            </table>
+                                                </table>
+                                                <a href="#" class="btn btn-primary" onclick="printDetail()">Print</a>
+                                            {% endif %}
                                         </div>
                                       
                                         <hr/>
@@ -151,5 +165,18 @@
         <!-- main-panel ends -->
       </div>
 
-
+      <script>
+        function printDetail() {
+            var card = document.querySelector('.card');
+            var printWindow = window.open('', '', 'width=600,height=600');
+            printWindow.document.open();
+            printWindow.document.write('<html><head><title>Print</title></head><body>');
+            printWindow.document.write('<style>@media print { .btn { display: none; } }</style>');
+            printWindow.document.write(card.outerHTML);
+            printWindow.document.write('</body></html>');
+            printWindow.document.close();
+            printWindow.print();
+            {% comment %} printWindow.close(); {% endcomment %}
+        }
+    </script>
 {% endblock body %}

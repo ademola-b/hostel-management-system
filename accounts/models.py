@@ -1,4 +1,5 @@
 import uuid
+from django.core.validators import RegexValidator
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 
@@ -6,6 +7,19 @@ from django.contrib.auth.models import AbstractUser
 # Create your models here.
 class User(AbstractUser):
     user_id = models.UUIDField(default=uuid.uuid4, primary_key=True, unique=True, editable=False)
+    username_validator = RegexValidator(r'^\d{4,}/\d{5,}[A-Za-z]{2}$', "This format is not valid")
+
+    username = models.CharField(
+        "username",
+        max_length=150,
+        unique=True,
+        help_text=
+            "Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.",
+        validators=[username_validator],
+        error_messages={
+            "unique": "A user with that username already exists.",
+        },
+    )
     profile_pic = models.ImageField(upload_to='profile_pic/')
     phone = models.CharField(max_length=15, null=True, blank=True)
     gender = models.CharField(max_length=7, choices=[('male', 'male'),('female', 'female')], default='other')
