@@ -35,8 +35,14 @@ class UserUpdateProfileForm(forms.ModelForm):
     ]
 
     bloodgroup_choices = [
+        ('A+', 'A+'),
+        ('A-', 'A-'),
+        ('B+', 'B+'),
+        ('B-', 'B-'),
+        ('AB+', 'AB+'),
+        ('AB-', 'AB-'),
         ('O+', 'O+'),
-        ('AB+', 'AB+')
+        ('O-', 'O-'),
     ]
 
     first_name = forms.CharField(required=True, widget=forms.TextInput(attrs={'class':'form-control', 'placeholder':'Enter your first name'}))
@@ -99,13 +105,15 @@ class StudentProfileForm(forms.ModelForm):
     ('ND I', 'ND I'),
     ('ND II', 'ND II'),
     ('HND I', 'HND I'),
-    ('HND II', 'HND II')
+    ('HND II', 'HND II'),
+    ('ND II SPILLOVER', 'ND II SPILLOVER'),
+    ('HND II SPILLOVER', 'HND II SPILLOVER'),
     ]
 
     school = forms.ModelChoiceField(required=True, queryset=School.objects.all(), widget=forms.Select(
         attrs={
             'class': 'form-control select form-select',
-            'onchange': 'this.form.submit()'
+            # 'onchange': 'this.form.submit()'
         }
     ))
 
@@ -134,20 +142,18 @@ class StudentProfileForm(forms.ModelForm):
         self.fields['department'].queryset = Department.objects.none()
 
         print(f"data: {self.data}")
-        # if 'school' in self.data:
-        #     try:
-        #         school_id = str(self.data.get('school'))
-        #         print(f"scc: {school_id}")
-        #         self.fields['department'].queryset = Department.objects.filter(school__school_id = school_id)
-        #     except:
-        #         pass
-        # elif self.instance.pk:
-        #     # pass
-        #     # print(type(self.instance.department))
-        #     # print(f"in: {self.instance.pk}")
-        #     self.fields['department'].queryset = self.instance.school.department_set
-            
-
+        if 'school' in self.data:
+            try:
+                school_id = str(self.data.get('school'))
+                print(f"scc: {school_id}")
+                self.fields['department'].queryset = Department.objects.filter(school__school_id = school_id)
+            except:
+                pass
+        elif self.instance and self.instance.school:
+            # pass
+            # print(type(self.instance.department))
+            # print(f"in: {self.instance.pk}")
+            self.fields['department'].queryset = self.instance.school.department_set
 
 class StudentContactForm(forms.ModelForm):
 
@@ -168,7 +174,4 @@ class StudentContactForm(forms.ModelForm):
             "next_of_kin_phone",
             "next_of_kin_address"
         ]
-
-
-
-      
+ 

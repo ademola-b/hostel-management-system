@@ -104,48 +104,50 @@ class UpdateProfileView(UpdateView):
         form2 = self.second_form_class(request.POST)
         form3 = self.third_form_class(request.POST)
 
-        if 'update_btn' in request.POST:
-            if form1.is_valid() and form2.is_valid() and form3.is_valid():
-                instance1 = form1.save(commit=False)
-                instance2 = form2.save(commit=False)
+        # if 'update_btn' in request.POST:
+        if form1.is_valid() and form2.is_valid() and form3.is_valid():
+            instance1 = form1.save(commit=False)
+            instance2 = form2.save(commit=False)
 
-                student = Student.objects.create(
-                    user = request.user,
-                    school = form2.cleaned_data['school'],
-                    department = form2.cleaned_data['department'],
-                    level = form2.cleaned_data['level']
-                )
+            student = Student.objects.create(
+                user = request.user,
+                school = form2.cleaned_data['school'],
+                department = form2.cleaned_data['department'],
+                level = form2.cleaned_data['level']
+            )
 
-                StudentContact.objects.create(
-                    student = student,
-                    address = form3.cleaned_data['address'],
-                    next_of_kin_name = form3.cleaned_data['next_of_kin_name'],
-                    next_of_kin_phone = form3.cleaned_data['next_of_kin_phone'],
-                    next_of_kin_address = form3.cleaned_data['next_of_kin_address']
-                )
+            StudentContact.objects.create(
+                student = student,
+                address = form3.cleaned_data['address'],
+                parent_phone = form3.cleaned_data['parent_phone'],
+                parent_address = form3.cleaned_data['parent_address'],
+                next_of_kin_name = form3.cleaned_data['next_of_kin_name'],
+                next_of_kin_phone = form3.cleaned_data['next_of_kin_phone'],
+                next_of_kin_address = form3.cleaned_data['next_of_kin_address']
+            )
 
-                user = User.objects.get(user_id = request.user.user_id)
+            user = User.objects.get(user_id = request.user.user_id)
 
-                user.first_name = form1.cleaned_data['first_name']
-                user.last_name = form1.cleaned_data['last_name']
-                user.middle_name = form1.cleaned_data['middle_name']
-                user.dob = form1.cleaned_data['dob']
-                user.blood_group = form1.cleaned_data['blood_group']
-                user.phone = form1.cleaned_data['phone']
-                user.profile_pic = form1.cleaned_data['profile_pic']
-                user.gender = form1.cleaned_data['gender']
-                user.save()
-                messages.success(request, "Profile Successfully Updated, You can proceed with your application")
-                return redirect("allocation:hostel-list")
-            else:
-                messages.error(request, f"{form1.errors.as_text()} {form2.errors.as_text()}")
-                return render(request, self.template_name, {'form1':form1, 'form2':form2, 'form3':form3})
+            user.first_name = form1.cleaned_data['first_name']
+            user.last_name = form1.cleaned_data['last_name']
+            user.middle_name = form1.cleaned_data['middle_name']
+            user.dob = form1.cleaned_data['dob']
+            user.blood_group = form1.cleaned_data['blood_group']
+            user.phone = form1.cleaned_data['phone']
+            user.profile_pic = form1.cleaned_data['profile_pic']
+            user.gender = form1.cleaned_data['gender']
+            user.save()
+            messages.success(request, "Profile Successfully Updated, You can proceed with your application")
+            return redirect("allocation:hostel-list")
         else:
-            school = request.POST.get('school')
-            print(f"school: {school}")
-            # department_field = request.POST.get('department')
-            department = Department.objects.filter(school=school)
-            form2.fields['department'].queryset = department
+            messages.error(request, f"{form1.errors.as_text()} {form2.errors.as_text()}")
             return render(request, self.template_name, {'form1':form1, 'form2':form2, 'form3':form3})
+        # else:
+        #     school = request.POST.get('school')
+        #     print(f"school: {school}")
+        #     # department_field = request.POST.get('department')
+        #     department = Department.objects.filter(school=school)
+        #     form2.fields['department'].queryset = department
+        #     return render(request, self.template_name, {'form1':form1, 'form2':form2, 'form3':form3})
             
         

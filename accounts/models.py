@@ -37,7 +37,10 @@ level_choice = [
     ('ND I', 'ND I'),
     ('ND II', 'ND II'),
     ('HND I', 'HND I'),
-    ('HND II', 'HND II')
+    ('HND II', 'HND II'),
+    ('ND II SPILLOVER', 'ND II SPILLOVER'),
+    ('HND II SPILLOVER', 'HND II SPILLOVER'),
+    
 ]
 
 class School(models.Model):
@@ -72,14 +75,13 @@ class Student(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     school = models.ForeignKey(School, on_delete=models.SET_NULL, null=True)
     department = models.ForeignKey(Department, on_delete=models.CASCADE)
-    level = models.CharField(max_length=7, choices=level_choice)
+    level = models.CharField(max_length=20, choices=level_choice)
     payment_made = models.BooleanField(default=False)
     stripe_checkout_id = models.CharField(max_length=500)
 
     # def __str__(self):
     #     return f"{self.user.username} - {self.payment_made}"
     
-
 class StudentContact(models.Model):
     contact_id = models.UUIDField(default=uuid.uuid4, unique=True, primary_key=True, editable=False)
     student = models.OneToOneField(Student, on_delete=models.CASCADE)
@@ -92,9 +94,4 @@ class StudentContact(models.Model):
 
     def __str__(self):
         return f"{self.student.user.username}"
-
-    
-
-
-    
 

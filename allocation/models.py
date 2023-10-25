@@ -10,7 +10,7 @@ class Hall(models.Model):
     picture = models.ImageField(default='img/bld.jpeg', upload_to='img/')
     room_number = models.IntegerField()
     price = models.IntegerField(default=0)
-    gender = models.CharField(max_length=8, choices=[('boys', 'boys'), ('girls', 'girls')], default='boys')
+    gender = models.CharField(max_length=8, choices=[('male', 'male'), ('female', 'female')], default='boys')
     status = models.CharField(max_length=12, choices=[('available', 'available'),('unavailable', 'unavailable')], default='available')
 
     def __str__(self):
