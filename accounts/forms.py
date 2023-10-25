@@ -1,7 +1,9 @@
+import datetime
 from django import forms
 from django.core.validators import RegexValidator
 from django.contrib.auth import get_user_model, validators
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
+from django.utils import timezone
 
 from .models import Student, Department, School, StudentContact
 
@@ -32,20 +34,48 @@ class UserUpdateProfileForm(forms.ModelForm):
         ('female', 'female')
     ]
 
+    bloodgroup_choices = [
+        ('O+', 'O+'),
+        ('AB+', 'AB+')
+    ]
+
     first_name = forms.CharField(required=True, widget=forms.TextInput(attrs={'class':'form-control', 'placeholder':'Enter your first name'}))
+    middle_name = forms.CharField(required=True, widget=forms.TextInput(attrs={'class':'form-control', 'placeholder':'Enter your middle name'}))
     last_name = forms.CharField(required=True, widget=forms.TextInput(attrs={'class':'form-control', 'placeholder':'Enter your last name'}))
     email = forms.EmailField(required=False, max_length=254, help_text='Enter a valid email address', widget=forms.EmailInput(attrs={'id': 'email', 'class': 'form-control', 'placeholder':'Enter your Email Address', 'disabled':'disabled'}))
     phone = forms.CharField(required=True, widget=forms.TextInput(attrs={'class':'form-control', 'placeholder':'Enter your phone number'}))
+    
+    dob = forms.DateField(required=True, widget = forms.TextInput(attrs={
+        'class': 'form-control',
+        'type': 'date'
+    }))
+
+    blood_group = forms.ChoiceField(required=True, choices=bloodgroup_choices, widget=forms.Select(
+        attrs={
+            'class': 'form-control select form-select'
+        }))
+    
     gender = forms.ChoiceField(required=True, choices=gender_choices, widget=forms.Select(attrs={
         'class': 'form-control select form-select'
     }))
 
+    profile_pic = forms.ImageField(
+        required=True, help_text="Student Picture", widget=forms.FileInput(
+            attrs={
+                'class': 'form-control',
+                'type': 'file',
+                'accept': 'image/jpeg, image/png'
+            }))
+    
 
     class Meta:
         model = get_user_model()
         fields = [
             "first_name",
+            "middle_name",
             "last_name",
+            "dob",
+            "blood_group",
             "profile_pic",
             "phone",
             "gender"
@@ -56,6 +86,13 @@ class UserUpdateProfileForm(forms.ModelForm):
 
         self.fields['email'].initial = request.user.email
 
+    def clean_dob(self):
+        dob = self.cleaned_data.get('dob')
+        print(dob)
+        if dob and dob > timezone.now().date():
+            raise forms.ValidationError("Date cannot be a future date")
+        return dob
+
 class StudentProfileForm(forms.ModelForm):
 
     level_choice = [
@@ -65,13 +102,14 @@ class StudentProfileForm(forms.ModelForm):
     ('HND II', 'HND II')
     ]
 
-    school = forms.ModelChoiceField(required=True, queryset=School.objects.all(), empty_label="Select School", widget=forms.Select(
+    school = forms.ModelChoiceField(required=True, queryset=School.objects.all(), widget=forms.Select(
         attrs={
-            'class': 'form-control select form-select'
+            'class': 'form-control select form-select',
+            'onchange': 'this.form.submit()'
         }
     ))
 
-    department = forms.ModelChoiceField(required=True, queryset=Department.objects.all(), empty_label="Select Department", widget=forms.Select(
+    department = forms.ModelChoiceField(queryset=Department.objects.none(), widget=forms.Select(
         attrs={
             'class': 'form-control select form-select'
         }
@@ -91,10 +129,31 @@ class StudentProfileForm(forms.ModelForm):
             "level"
         ]
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['department'].queryset = Department.objects.none()
+
+        print(f"data: {self.data}")
+        # if 'school' in self.data:
+        #     try:
+        #         school_id = str(self.data.get('school'))
+        #         print(f"scc: {school_id}")
+        #         self.fields['department'].queryset = Department.objects.filter(school__school_id = school_id)
+        #     except:
+        #         pass
+        # elif self.instance.pk:
+        #     # pass
+        #     # print(type(self.instance.department))
+        #     # print(f"in: {self.instance.pk}")
+        #     self.fields['department'].queryset = self.instance.school.department_set
+            
+
 
 class StudentContactForm(forms.ModelForm):
 
     address = forms.CharField(required=True, widget=forms.Textarea(attrs={'class':'form-control', 'placeholder':'Enter your address'}))
+    parent_phone = forms.CharField(required=True, widget=forms.TextInput(attrs={'class':'form-control', 'placeholder':'Enter parent/guardian phone'}))
+    parent_address = forms.CharField(required=True, widget=forms.Textarea(attrs={'class':'form-control', 'placeholder':'Enter parent/guardian address'}))
     next_of_kin_name = forms.CharField(required=True, widget=forms.TextInput(attrs={'class':'form-control', 'placeholder':'Enter next of kin name'}))
     next_of_kin_phone = forms.CharField(required=True, widget=forms.TextInput(attrs={'class':'form-control', 'placeholder':'Enter next of kin phone'}))
     next_of_kin_address = forms.CharField(required=True, widget=forms.Textarea(attrs={'class':'form-control', 'placeholder':'Enter next of kin address'}))
@@ -103,6 +162,8 @@ class StudentContactForm(forms.ModelForm):
         model = StudentContact
         fields = [
             "address",
+            "parent_phone",
+            "parent_address",
             "next_of_kin_name", 
             "next_of_kin_phone",
             "next_of_kin_address"
