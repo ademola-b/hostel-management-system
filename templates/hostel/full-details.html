@@ -81,7 +81,9 @@
                                                                 <h5 class="font-weight-normal">{{personal_info.user.username}}</h5>
                                                             </td>
                                                             <td>
-                                                                <img src="{{personal_info.user.profile_pic.url}}" width="100" height="100"/>
+                                                            </td>
+                                                            <td>
+                                                                <img src="{{personal_info.user.profile_pic.url}}" style="border-radius: 0%; width: 150px; height: 150px"/>
                                                             </td>
                                                         </tr>   
                                                         <tr>
@@ -147,7 +149,7 @@
                                                         </tr>   
                                                     {% endif %}
                                                 </table>
-                                                <a href="#" class="btn btn-primary" onclick="printDetail()">Print</a>
+                                                <a href="#" class="btn btn-primary" onclick="print()">Print</a>
                                             {% endif %}
                                         </div>
                                       
@@ -165,7 +167,15 @@
         <!-- main-panel ends -->
       </div>
 
+
       <script>
+        function print(){
+          console.log('print');
+          $('.table').printThis();
+        }
+      </script>
+
+      {% comment %} <script>
         function printDetail() {
             var card = document.querySelector('.card');
             var printWindow = window.open('', '', 'width=600,height=600');
@@ -178,5 +188,5 @@
             printWindow.print();
             //printWindow.close();
         }
-    </script>
+    </script> {% endcomment %}
 {% endblock body %}
